@@ -93,7 +93,13 @@ const viewAllDepartments = () => {
 
 //View all Roles
 const viewAllRoles = () => {
-    const query = 'SELECT roles.title, roles.id, department.dept_name AS department, roles.salary FROM roles LEFT JOIN department on roles.department_id = department.id';
+    const query = `SELECT
+    roles.title, 
+    roles.id AS role_id, 
+    department.dept_name AS department, 
+    roles.salary 
+    FROM roles 
+    LEFT JOIN department on roles.department_id = department.id`;
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log('=======================')
@@ -108,11 +114,11 @@ const viewAllRoles = () => {
 //TODO FIX this broken query
 const viewAllEmployees = () => {
     const query = `SELECT 
-    employee.id, 
+    employee.id as emp_id, 
     employee.first_name, 
     employee.last_name, 
     roles.title, 
-    dept_name AS department, 
+    dept_name, 
     roles.salary, 
     CONCAT(manager.first_name, ' ', manager.last_name) AS manager
     FROM employee
@@ -153,25 +159,26 @@ const addDepartment = () => {
 // TODO Add a new Role
 const addRole = () => {
     inquirer
-    .prompt({
+    .prompt([
+        {
             type: 'input',
             name: 'addTitle',
             message: 'Enter the title of the new role.',
         },
         {
-            type: 'input',
+            type: 'number',
             name: 'addSalary',
             message: 'Enter the salary of the new role.',
         },
         {
-            type: 'input',
-            name: 'addTitle',
-            message: 'Enter the title of the new role.',
+            type: 'number',
+            name: 'addDept',
+            message: 'Enter the Department number of the new role.',
         },
-        )
+    ])
     .then ((data) => {
-        console.log (data.addTitle);
-        const query = `INSERT INTO department(dept_name) VALUES ('${data.addDepartment}')`;
+        console.log (data);
+        const query = `INSERT INTO roles(title, salary, department_id) VALUES ('${data.addTitle}', '${data.addSalary}', '${data.addDept}')`;
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.log('=======================')
