@@ -107,7 +107,18 @@ const viewAllRoles = () => {
 // View all employees
 //TODO FIX this broken query
 const viewAllEmployees = () => {
-    const query = "SELECT employee.id, employee.first_name, employee.last_name, roles.title,department.dept_name AS department, roles.salary, CONCAT(manager.first_name,' ',manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = roles.id, LEFT JOIN department on roles.department_id = department.id";
+    const query = `SELECT 
+    employee.id, 
+    employee.first_name, 
+    employee.last_name, 
+    roles.title, 
+    dept_name AS department, 
+    roles.salary, 
+    CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN roles ON employee.role_id = roles.id
+    LEFT JOIN department ON department.id = roles.department_id
+    LEFT JOIN employee manager ON manager.id = employee.manager_id`;
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log('=======================')
@@ -140,6 +151,37 @@ const addDepartment = () => {
 }; //end of add function
 
 // TODO Add a new Role
+const addRole = () => {
+    inquirer
+    .prompt({
+            type: 'input',
+            name: 'addTitle',
+            message: 'Enter the title of the new role.',
+        },
+        {
+            type: 'input',
+            name: 'addSalary',
+            message: 'Enter the salary of the new role.',
+        },
+        {
+            type: 'input',
+            name: 'addTitle',
+            message: 'Enter the title of the new role.',
+        },
+        )
+    .then ((data) => {
+        console.log (data.addTitle);
+        const query = `INSERT INTO department(dept_name) VALUES ('${data.addDepartment}')`;
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.log('=======================')
+            console.table(res);
+            console.log('=======================')
+            startMenu();
+        })
+    });
+}; //end of add function
+
 
 
 //TODO Add a new employee
