@@ -10,12 +10,14 @@ const connection = mysql.createConnection({
     database: "emp_tracker_db"
 });
 
+console.log("Welcome to the Employee tracker.");
 const startMenu = () => {
+    
 inquirer
     .prompt({
         type: 'list',
         name: 'startChoice',
-        message: 'Welcome to the Employee tracker. Please select one of the following options',
+        message: 'Please select one of the following options',
         choices: [
             'view all departments', 
             'view all roles', 
@@ -70,8 +72,55 @@ inquirer
 
     )}; //end of start menu
 
-
-
-
+const viewAllDepartments = () => {
+    const query = 'SELECT * FROM department';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('=======================')
+        console.table(res);
+        console.log('=======================')
+        startMenu();
+    })
     
+}; //end of view function
+
+const viewAllRoles = () => {
+    const query = 'SELECT roles.title AS title, roles.salary AS salary, department.dept_name AS department FROM roles JOIN  department.id = roles.department_id';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('=======================')
+        console.table(res);
+        console.log('=======================')
+        startMenu();
+    })
+    
+}; //end of view function
+
+const viewAllEmployees = () => {
+    const query = 'SELECT * FROM employee';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('=======================')
+        console.table(res);
+        console.log('=======================')
+        startMenu();
+    })
+    
+}; //end of view function
+
+const addDepartment = () => {
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'addDepartment',
+        message: 'Enter the name of the new department.',
+    })
+    .then ((data) => {
+        console.log (data)
+    
+    });
+
+}; //end of add function
+
+
 startMenu();
