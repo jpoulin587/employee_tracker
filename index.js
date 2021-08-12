@@ -85,7 +85,7 @@ const viewAllDepartments = () => {
 }; //end of view function
 
 const viewAllRoles = () => {
-    const query = 'SELECT roles.title AS title, roles.salary AS salary, department.dept_name AS department FROM roles JOIN  department.id = roles.department_id';
+    const query = 'SELECT roles.title, roles.id, department.dept_name AS department, roles.salary FROM roles LEFT JOIN department on roles.department_id = department.id';
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log('=======================')
@@ -96,8 +96,9 @@ const viewAllRoles = () => {
     
 }; //end of view function
 
+//TODO FIX this broken query
 const viewAllEmployees = () => {
-    const query = 'SELECT * FROM employee';
+    const query = "SELECT employee.id, employee.first_name, employee.last_name, roles.title,department.dept_name AS department, roles.salary, CONCAT(manager.first_name,' ',manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = roles.id, LEFT JOIN department on roles.department_id = department.id";
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.log('=======================')
@@ -116,8 +117,17 @@ const addDepartment = () => {
         message: 'Enter the name of the new department.',
     })
     .then ((data) => {
-        console.log (data)
-    
+        console.log (data.addDepartment)
+        const query = `INSERT INTO department(dept_name) VALUES ('${data.addDepartment}')`;
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.log('=======================')
+            console.table(res);
+            console.log('=======================')
+            startMenu();
+        })
+
+
     });
 
 }; //end of add function
