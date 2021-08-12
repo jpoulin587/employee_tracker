@@ -25,7 +25,8 @@ inquirer
             'add a department', 
             'add a role', 
             'add an employee', 
-            'update an employee role'
+            'update an employee role',
+            'exit menu'
         ]
 
 
@@ -63,6 +64,11 @@ inquirer
         case 'update an employee role':
         updateEmployeeRole()
         break;
+
+        case 'exit menu':
+            console.log('Signed out. Type "npm start" to run it again')
+            connection.end();
+        break;
         
         default:
             break;
@@ -72,6 +78,7 @@ inquirer
 
     )}; //end of start menu
 
+// View all Departments
 const viewAllDepartments = () => {
     const query = 'SELECT * FROM department';
     connection.query(query, (err, res) => {
@@ -84,6 +91,7 @@ const viewAllDepartments = () => {
     
 }; //end of view function
 
+//View all Roles
 const viewAllRoles = () => {
     const query = 'SELECT roles.title, roles.id, department.dept_name AS department, roles.salary FROM roles LEFT JOIN department on roles.department_id = department.id';
     connection.query(query, (err, res) => {
@@ -96,6 +104,7 @@ const viewAllRoles = () => {
     
 }; //end of view function
 
+// View all employees
 //TODO FIX this broken query
 const viewAllEmployees = () => {
     const query = "SELECT employee.id, employee.first_name, employee.last_name, roles.title,department.dept_name AS department, roles.salary, CONCAT(manager.first_name,' ',manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = roles.id, LEFT JOIN department on roles.department_id = department.id";
@@ -109,6 +118,7 @@ const viewAllEmployees = () => {
     
 }; //end of view function
 
+//Add new Department
 const addDepartment = () => {
     inquirer
     .prompt({
@@ -126,11 +136,24 @@ const addDepartment = () => {
             console.log('=======================')
             startMenu();
         })
-
-
     });
-
 }; //end of add function
+
+// TODO Add a new Role
+
+
+//TODO Add a new employee
+
+
+
+//TODO Update employee's role
+
+
+
+
+
+
+
 
 
 startMenu();
