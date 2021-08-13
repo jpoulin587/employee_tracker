@@ -199,7 +199,6 @@ const addRole = () => {
     });
 })}; //end of add function
 
-//TODO Add a new employee
 const addEmployee = () => {
     connection.query('SELECT * FROM roles', (err, roles) => {
         if (err) console.log(err);
@@ -207,6 +206,15 @@ const addEmployee = () => {
             return {
                 name: roles.title,
                 value: roles.id,
+            };
+        });
+
+    connection.query('SELECT * FROM employee', (err, employee) => {
+        if (err) console.log(err);
+        employee = employee.map((employee) => {
+            return {
+                name: `${employee.first_name} ${employee.last_name}`,
+                value: employee.id,
             };
         });
 
@@ -228,10 +236,16 @@ const addEmployee = () => {
             message: 'Select the role for the new employee.',
             choices: roles,
         },
+        {
+            type: 'list',
+            name: 'addManager',
+            message: 'Select the manager for the new employee.',
+            choices: employee,
+        },
     ])
     .then ((data) => {
         console.log (data);
-        const query = `INSERT INTO employee(first_name, last_name, role_id) VALUES ('${data.addFirstName}', '${data.addLastName}', '${data.addRole}')`;
+        const query = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ('${data.addFirstName}', '${data.addLastName}','${data.addRole}', '${data.addManager}')`;
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.log('=======================')
@@ -240,7 +254,7 @@ const addEmployee = () => {
             startMenu();
         })
     });
-})}; //end of add function
+})})}; //end of add function
 
 
 

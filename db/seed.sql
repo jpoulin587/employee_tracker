@@ -20,8 +20,8 @@ VALUES  ("Jean-Luc", "Picard", 1, 1),
         ("Beverly", "Crusher", 3, 1),
         ("Keko", "O'Brian", 4, 3),
         ("Geordi", "LaForge", 5, 2),
-        ("Worf", "Worf", 6, 2),
-        ("Reg", "Barkley", 5, 2);
+        ("Mister", "Worf", 6, 2),
+        ("Reginald", "Barkley", 5, 2);
 
 
 
