@@ -182,7 +182,7 @@ const addRole = () => {
         {
             type: 'list',
             name: 'addDept',
-            message: 'Select the Department number of the new role.',
+            message: 'Select the department of the new role.',
             choices: departments,
         },
     ])
@@ -199,9 +199,57 @@ const addRole = () => {
     });
 })}; //end of add function
 
-
-
 //TODO Add a new employee
+const addEmployee = () => {
+    connection.query('SELECT * FROM roles', (err, roles) => {
+        if (err) console.log(err);
+        roles = roles.map((roles) => {
+            return {
+                name: roles.title,
+                value: roles.id,
+            };
+        });
+
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'addFirstName',
+            message: 'Enter the first name of the new employee.',
+        },
+        {
+            type: 'input',
+            name: 'addLastName',
+            message: 'Enter the last name of the new employee.',
+        },
+        {
+            type: 'list',
+            name: 'addRole',
+            message: 'Select the role for the new employee.',
+            choices: roles,
+        },
+    ])
+    .then ((data) => {
+        console.log (data);
+        const query = `INSERT INTO employee(first_name, last_name, role_id) VALUES ('${data.addFirstName}', '${data.addLastName}', '${data.addRole}')`;
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.log('=======================')
+            console.table(res);
+            console.log('=======================')
+            startMenu();
+        })
+    });
+})}; //end of add function
+
+
+
+
+
+
+
+
+
 
 
 
