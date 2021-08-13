@@ -34,7 +34,7 @@ inquirer
     }) //end of start menu questions
 
     .then ((data) => {
-    console.log (data)
+    //console.log (data)
     
     switch (data.startChoice){
         case "view all departments":
@@ -144,7 +144,7 @@ const addDepartment = () => {
         message: 'Enter the name of the new department.',
     })
     .then ((data) => {
-        console.log (data.addDepartment)
+        //console.log (data.addDepartment)
         const query = `INSERT INTO department(dept_name) VALUES ('${data.addDepartment}')`;
         connection.query(query, (err, res) => {
             if (err) throw err;
@@ -187,7 +187,7 @@ const addRole = () => {
         },
     ])
     .then ((data) => {
-        console.log (data);
+        //console.log (data);
         const query = `INSERT INTO roles(title, salary, department_id) VALUES ('${data.addTitle}', '${data.addSalary}', '${data.addDept}')`;
         connection.query(query, (err, res) => {
             if (err) throw err;
@@ -244,7 +244,7 @@ const addEmployee = () => {
         },
     ])
     .then ((data) => {
-        console.log (data);
+        //console.log (data);
         const query = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ('${data.addFirstName}', '${data.addLastName}','${data.addRole}', '${data.addManager}')`;
         connection.query(query, (err, res) => {
             if (err) throw err;
@@ -293,7 +293,7 @@ const updateEmployeeRole = () => {
         },
     ])
     .then ((data) => {
-        console.log(data);
+        //console.log(data);
         const query = `UPDATE employee SET role_id = ${data.selectRole} WHERE id = ${data.selectEmployee}`;
         connection.query(query, (err, res) => {
             if (err) throw err;
@@ -305,13 +305,5 @@ const updateEmployeeRole = () => {
         })
     })
 })})}; //end of update function
-
-
-
-
-
-
-
-
 
 startMenu();
