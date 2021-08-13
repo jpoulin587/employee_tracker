@@ -257,17 +257,54 @@ const addEmployee = () => {
 })})}; //end of add function
 
 
-
-
-
-
-
-
-
-
-
-
 //TODO Update employee's role
+const updateEmployeeRole = () => {
+    connection.query('SELECT * FROM employee', (err, employee) => {
+        if (err) console.log(err);
+        employee = employee.map((employee) => {
+            return {
+                name: `${employee.first_name} ${employee.last_name}`,
+                value: employee.id,
+            };
+        });
+
+    connection.query('SELECT * FROM roles', (err, roles) => {
+        if (err) console.log(err);
+        roles = roles.map((roles) => {
+            return {
+                name: roles.title,
+                value: roles.id,
+            };
+        });
+
+    inquirer
+    .prompt([
+        {
+            type: 'list',
+            name: 'selectEmployee',
+            message: 'Select the employee changing roles.',
+            choices: employee,
+        },
+        {
+            type: 'list',
+            name: 'selectRole',
+            message: 'Select the new role for the selected employee.',
+            choices: roles,
+        },
+    ])
+    .then ((data) => {
+        console.log(data);
+        const query = `UPDATE employee SET role_id = ${data.selectRole} WHERE id = ${data.selectEmployee}`;
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            console.log('=======================')
+            console.table(res);
+            console.log('=======================')
+
+        startMenu();
+        })
+    })
+})})}; //end of update function
 
 
 
