@@ -156,8 +156,17 @@ const addDepartment = () => {
     });
 }; //end of add function
 
-// TODO Add a new Role
+// Add a new Role
 const addRole = () => {
+    connection.query('SELECT * FROM department', (err, departments) => {
+        if (err) console.log(err);
+        departments = departments.map((department) => {
+            return {
+                name: department.dept_name,
+                value: department.id,
+            };
+        });
+
     inquirer
     .prompt([
         {
@@ -171,9 +180,10 @@ const addRole = () => {
             message: 'Enter the salary of the new role.',
         },
         {
-            type: 'number',
+            type: 'list',
             name: 'addDept',
-            message: 'Enter the Department number of the new role.',
+            message: 'Select the Department number of the new role.',
+            choices: departments,
         },
     ])
     .then ((data) => {
@@ -187,7 +197,7 @@ const addRole = () => {
             startMenu();
         })
     });
-}; //end of add function
+})}; //end of add function
 
 
 
